@@ -1,0 +1,41 @@
+body {background:black; color:white;}
+main {margin-top:50px; margin-left:auto; margin-right:auto;}
+h1 {text-align: center; margin-top:300px; font-size:100px; font-family: 'Aclonica', sans-serif;}
+h2 {text-align: center; column-span: all; font-family: 'Aclonica', sans-serif; font-size:50px;}
+p {font-size:25px; font-family: 'Abhaya Libre', serif;}
+
+.row {margin: auto;
+    width: 90%;
+    background-color: #ffffff;}
+    
+.column {
+    float: left; 
+}
+
+.column p {
+	color: black;
+	}
+
+/* Border columns, l, r, middle */
+.column.side {
+    width: 8%;
+}
+
+/* text columns */
+.column.text {
+    width: 38%;
+    color: black;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+#versionTime {
+	text-align: center;
+    color: gray;
+	}
+

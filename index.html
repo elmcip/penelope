@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="description" content="Penelope is combinatory sonnet generator film based on the Odyssey, addressing themes of longing, mass extinction, and migration. Recombinations of lines of the poem, video clips, and musical arrangements produce a different version of the project on each run.">
+		<meta name=keywords content="combinatory poetry, poetry generator, sonnet, mass extinction, odyssey, combinatory cinema, generative music">
+		<meta name=author content="Alejandro Albornoz, Roderick Coover, Scott Rettberg"> 
+		<title>
+			Penelope 
+		</title>
+
+		<link href='https://fonts.googleapis.com/css?family=Aclonica' rel='stylesheet'>
+		<link href="https://fonts.googleapis.com/css?family=Abhaya+Libre" rel="stylesheet">
+		<link rel="StyleSheet" href="style.css" type="text/css" /> 
+		<script type="text/javascript">
+		
+			// V1 August 2018 by Alejandro Albornoz (Sound), Roderick Coover (Image), Scott Rettberg (Text and Code). A CRchange production.
+			// Oboe by Marion Walker, Voice by Heather Morgan, Actors: Helen Amourgi, Kostas Annikas Deftereos, and Sophia Kagadis
+			// current version will work only in Google Chrome
+			// current version requires that local installation of Chrome be set to allow autoplay of videos. At chrome://flags/#autoplay-policy set Autoplay policy to "No user gesture is required"
+			// current version will use only WebM video files
+			// future version will do browser detection and use appropriate formats for other browsers
+			
+			// video folder location variables
+				// WebM files
+			var vidlocAB1_WebM = "video/AB1/WebM/";
+			var vidlocAB2_WebM = "video/AB2/WebM/";
+			var vidlocCD1_WebM = "video/CD1/WebM/";
+			var vidlocCD2_WebM = "video/CD2/WebM/";
+			var vidlocEF1_WebM = "video/EF1/WebM/";
+			var vidlocEF2_WebM = "video/EF2/WebM/";
+			var vidlocG1_WebM = "video/G1/WebM/";
+			var vidlocG2_WebM = "video/G2/WebM/";
+			var vidlocTitles_WebM = "video/Titles/WebM/";
+			var vidlocCredits_WebM = "video/Credits/WebM/";
+			var vidlocTran_WebM = "video/Transitions/WebM/";
+				// mov files
+			var vidlocAB1_mov = "video/AB1/mov/";
+			var vidlocAB2_mov = "video/AB2/mov/";
+			var vidlocCD1_mov = "video/CD1/mov/";
+			var vidlocCD2_mov = "video/CD2/mov/";
+			var vidlocEF1_mov = "video/EF1/mov/";
+			var vidlocEF2_mov = "video/EF2/mov/";
+			var vidlocG1_mov = "video/G1/mov/";
+			var vidlocG2_mov = "video/G2/mov/";
+			var vidlocTitles_mov = "video/Titles/mov/";
+			var vidlocCredits_mov = "video/Credits/mov/";
+			var vidlocTran_mov = "video/Transitions/mov/";
+			
+			// note: actress name in location file will be replaced with array in future version with multiple actresses
+			var actressName = "heather";
+			
+			// declare global variables for saved lines to print
+			var savedLine1;
+			var savedLine2;
+			var savedLine3;
+			var savedLine4;
+			var savedLine6;
+			var savedLine7;
+			var savedLine8;
+			var savedLine9;
+			var savedLine10;
+			var savedLine11;
+			var savedLine12;
+			var savedLine13;
+			var savedLine14;
+			var savedLine15;
+			var savedLine16;
+			var savedLine17;
+			var savedLine18;
+			var savedLine19;
+			var savedLine20;
+			var savedLine21;
+			var savedLine22;
+			var savedLine23;
+			var savedLine24;
+			var savedLine25;
+			var savedLine26;
+			
+			// declare global variables for line builders etc.
+			var sel; var ln; var loc; var tln; var lnuma; var selb; var lnb; var locb; var tlnb; var textLine; var cv; var ln1; var ln2; var videoloc; var audiosel; var poem; var audioTrans;
+			
+			// audio folder location variables
+				// note: first including only ogg, may add other audio file types
+				// note: locations and filenames may change if we add multiple actors reading
+				// note: archive current audio files before replacing with new voice files
+			var audlocA1a_ogg = "audio/voice_tracks/A1a/" + actressName + "/ogg/";
+			var audlocA1b_ogg = "audio/voice_tracks/A1b/" + actressName + "/ogg/";
+			var audlocA2a_ogg = "audio/voice_tracks/A2a/" + actressName + "/ogg/";
+			var audlocA2b_ogg = "audio/voice_tracks/A2b/" + actressName + "/ogg/";
+			var audlocB1a_ogg = "audio/voice_tracks/B1a/" + actressName + "/ogg/";
+			var audlocB1b_ogg = "audio/voice_tracks/B1b/" + actressName + "/ogg/";
+			var audlocB2a_ogg = "audio/voice_tracks/B2a/" + actressName + "/ogg/";
+			var audlocB2b_ogg = "audio/voice_tracks/B2b/" + actressName + "/ogg/";
+			var audlocC1a_ogg = "audio/voice_tracks/C1a/" + actressName + "/ogg/";
+			var audlocC1b_ogg = "audio/voice_tracks/C1b/" + actressName + "/ogg/";
+			var audlocC2a_ogg = "audio/voice_tracks/C2a/" + actressName + "/ogg/";
+			var audlocC2b_ogg = "audio/voice_tracks/C2b/" + actressName + "/ogg/";
+			var audlocD1a_ogg = "audio/voice_tracks/D1a/" + actressName + "/ogg/";
+			var audlocD1b_ogg = "audio/voice_tracks/D1b/" + actressName + "/ogg/";
+			var audlocD2a_ogg = "audio/voice_tracks/D2a/" + actressName + "/ogg/";
+			var audlocD2b_ogg = "audio/voice_tracks/D2b/" + actressName + "/ogg/";
+			var audlocE1a_ogg = "audio/voice_tracks/E1a/" + actressName + "/ogg/";
+			var audlocE1b_ogg = "audio/voice_tracks/E1b/" + actressName + "/ogg/";
+			var audlocE2a_ogg = "audio/voice_tracks/E2a/" + actressName + "/ogg/";
+			var audlocE2b_ogg = "audio/voice_tracks/E2b/" + actressName + "/ogg/";
+			var audlocF1a_ogg = "audio/voice_tracks/F1a/" + actressName + "/ogg/";
+			var audlocF1b_ogg = "audio/voice_tracks/F1b/" + actressName + "/ogg/";
+			var audlocF2a_ogg = "audio/voice_tracks/F2a/" + actressName + "/ogg/";
+			var audlocF2b_ogg = "audio/voice_tracks/F2b/" + actressName + "/ogg/";
+			var audlocG1a_ogg = "audio/voice_tracks/G1a/" + actressName + "/ogg/";
+			var audlocG1b_ogg = "audio/voice_tracks/G1b/" + actressName + "/ogg/";
+			var audlocG2a_ogg = "audio/voice_tracks/G2a/" + actressName + "/ogg/";
+			var audlocG2b_ogg = "audio/voice_tracks/G2b/" + actressName + "/ogg/";
+			var audlocAmbAB1_ogg = "audio/ambient_tracks/AB1/ogg/";
+			var audlocAmbAB2_ogg = "audio/ambient_tracks/AB2/ogg/";
+			var audlocAmbCD1_ogg = "audio/ambient_tracks/CD1/ogg/";
+			var audlocAmbCD2_ogg = "audio/ambient_tracks/CD2/ogg/";
+			var audlocAmbEF1_ogg = "audio/ambient_tracks/EF1/ogg/";
+			var audlocAmbEF2_ogg = "audio/ambient_tracks/EF2/ogg/";
+			var audlocAmbG_ogg = "audio/ambient_tracks/G/ogg/";
+			var audlocIntro_ogg = "audio/intro_music/ogg/";
+			var audlocTrans_ogg = "audio/transition_music/ogg/";
+			
+			// arrays of video files
+				// WebM files 
+			var videoAB1_WebM = ['AB1_01.WebM', 'AB1_02.WebM', 'AB1_03.WebM', 'AB1_04.WebM', 'AB1_05.WebM', 'AB1_06.WebM', 'AB1_07.WebM', 'AB1_08.WebM', 'AB1_09.WebM','AB1_10.WebM'];
+			var videoAB2_WebM = ['AB2_01.WebM', 'AB2_02.WebM', 'AB2_03.WebM', 'AB2_04.WebM', 'AB2_05.WebM', 'AB2_06.WebM', 'AB2_07.WebM', 'AB2_08.WebM', 'AB2_09.WebM', 'AB2_10.WebM'];
+			var videoCD1_WebM = ['CD1_01.WebM', 'CD1_02.WebM', 'CD1_03.WebM', 'CD1_04.WebM', 'CD1_05.WebM', 'CD1_06.WebM', 'CD1_07.WebM', 'CD1_08.WebM', 'CD1_09.WebM', 'CD1_10.WebM'];
+			var videoCD2_WebM = ['CD2_01.WebM', 'CD2_02.WebM', 'CD2_03.WebM', 'CD2_04.WebM', 'CD2_05.WebM', 'CD2_06.WebM', 'CD2_07.WebM', 'CD2_08.WebM', 'CD2_09.WebM', 'CD2_10.WebM'];
+			var videoEF1_WebM = ['EF1_01.WebM', 'EF1_02.WebM', 'EF1_03.WebM', 'EF1_04.WebM', 'EF1_05.WebM', 'EF1_06.WebM', 'EF1_07.WebM', 'EF1_08.WebM', 'EF1_09.WebM', 'EF1_10.WebM'];
+			var videoEF2_WebM = ['EF2_01.WebM', 'EF2_02.WebM', 'EF2_03.WebM', 'EF2_04.WebM', 'EF2_05.WebM', 'EF2_06.WebM', 'EF2_07.WebM', 'EF2_08.WebM', 'EF2_09.WebM', 'EF2_10.WebM'];
+			var videoG1_WebM = ['G1_01.WebM', 'G1_02.WebM', 'G1_03.WebM', 'G1_04.WebM', 'G1_05.WebM', 'G1_06.WebM', 'G1_07.WebM', 'G1_08.WebM', 'G1_09.WebM', 'G1_10.WebM'];
+			var videoG2_WebM = ['G2_01.WebM', 'G2_02.WebM', 'G2_03.WebM', 'G2_04.WebM', 'G2_05.WebM', 'G2_06.WebM', 'G2_07.WebM', 'G2_08.WebM', 'G2_09.WebM', 'G2_10.WebM'];
+			var videoTrans_WebM = ['T_01.WebM', 'T_02.WebM', 'T_03.WebM', 'T_04.WebM', 'T_05.WebM', 'T_06.WebM', 'T_07.WebM', 'T_08.WebM', 'T_09.WebM', 'T_10.WebM']; // add transition videos
+			var videoTitles_WebM = []; // add Titles video
+			var videoCredits_WebM = []; // add Credits video
+				// mov files
+			var videoAB1_mov = ['AB1_01.mov', 'AB1_02.mov', 'AB1_03.mov', 'AB1_04.mov', 'AB1_05.mov', 'AB1_06.mov', 'AB1_07.mov', 'AB1_08.mov', 'AB1_09.mov', 'AB1_10.mov'];
+			var videoAB2_mov = ['AB2_01.mov', 'AB2_02.mov', 'AB2_03.mov', 'AB2_04.mov', 'AB2_05.mov', 'AB2_06.mov', 'AB2_07.mov', 'AB2_08.mov', 'AB2_09.mov', 'AB2_10.mov'];
+			var videoCD1_mov = ['CD1_01.mov', 'CD1_02.mov', 'CD1_03.mov', 'CD1_04.mov', 'CD1_05.mov', 'CD1_06.mov', 'CD1_07.mov', 'CD1_08.mov', 'CD1_09.mov', 'CD1_10.mov'];
+			var videoCD2_mov = ['CD2_01.mov', 'CD2_02.mov', 'CD2_03.mov', 'CD2_04.mov', 'CD2_05.mov', 'CD2_06.mov', 'CD2_07.mov', 'CD2_08.mov', 'CD2_09.mov', 'CD2_10.mov'];
+			var videoEF1_mov = ['EF1_01.mov', 'EF1_02.mov', 'EF1_03.mov', 'EF1_04.mov', 'EF1_05.mov', 'EF1_06.mov', 'EF1_07.mov', 'EF1_08.mov', 'EF1_09.mov', 'EF1_10.mov'];
+			var videoEF2_mov = ['EF2_01.mov', 'EF2_02.mov', 'EF2_03.mov', 'EF2_04.mov', 'EF2_05.mov', 'EF2_06.mov', 'EF2_07.mov', 'EF2_08.mov', 'EF2_09.mov', 'EF2_10.mov'];
+			var videoG1_mov = ['G1_01.mov', 'G1_02.mov', 'G1_03.mov', 'G1_04.mov', 'G1_05.mov', 'G1_06.mov', 'G1_07.mov', 'G1_08.mov', 'G1_09.mov', 'G1_10.mov'];
+			var videoG2_mov = ['G2_01.mov', 'G2_02.mov', 'G2_03.mov', 'G2_04.mov', 'G2_05.mov', 'G2_06.mov', 'G2_07.mov', 'G2_08.mov', 'G2_09.mov', 'G2_10.mov'];
+			var videoTrans_mov = ['T_01.mov', 'T_02.mov', 'T_03.mov', 'T_04.mov', 'T_05.mov', 'T_06.mov', 'T_07.mov', 'T_08.mov', 'T_09.mov', 'T_10.mov'] // add transition videos
+			var videoTitles_mov = [];// add Titles video
+			var videoCredits_mov = []; // add Credits video
+			
+			// arrays of audio files
+				// currently includes only ogg files
+				// remember to check that all new files are added to arrays
+				// voice files
+				var audioA1a_ogg = ['A1a_01-ogg.ogg', 'A1a_02-ogg.ogg', 'A1a_03-ogg.ogg', 'A1a_04-ogg.ogg', 'A1a_05-ogg.ogg'];
+				var audioA1b_ogg = ['A1b_01-ogg.ogg', 'A1b_02-ogg.ogg', 'A1b_03-ogg.ogg', 'A1b_04-ogg.ogg', 'A1b_05-ogg.ogg'];
+				var audioA2a_ogg = ['A2a_01-ogg.ogg', 'A2a_02-ogg.ogg', 'A2a_03-ogg.ogg', 'A2a_04-ogg.ogg', 'A2a_05-ogg.ogg'];
+				var audioA2b_ogg = ['A2b_01-ogg.ogg', 'A2b_02-ogg.ogg', 'A2b_03-ogg.ogg', 'A2b_04-ogg.ogg', 'A2b_05-ogg.ogg'];
+				var audioB1a_ogg = ['B1a_01-ogg.ogg', 'B1a_02-ogg.ogg', 'B1a_03-ogg.ogg', 'B1a_04-ogg.ogg', 'B1a_05-ogg.ogg'];
+				var audioB1b_ogg = ['B1b_01-ogg.ogg', 'B1b_02-ogg.ogg', 'B1b_03-ogg.ogg', 'B1b_04-ogg.ogg', 'B1b_05-ogg.ogg'];
+				var audioB2a_ogg = ['B2a_01-ogg.ogg', 'B2a_02-ogg.ogg', 'B2a_03-ogg.ogg', 'B2a_04-ogg.ogg', 'B2a_05-ogg.ogg'];
+				var audioB2b_ogg = ['B2b_01-ogg.ogg', 'B2b_02-ogg.ogg', 'B2b_03-ogg.ogg', 'B2b_04-ogg.ogg', 'B2b_05-ogg.ogg'];
+				var audioC1a_ogg = ['C1a_01-ogg.ogg', 'C1a_02-ogg.ogg', 'C1a_03-ogg.ogg', 'C1a_04-ogg.ogg', 'C1a_05-ogg.ogg'];
+				var audioC1b_ogg = ['C1b_01-ogg.ogg', 'C1b_02-ogg.ogg', 'C1b_03-ogg.ogg', 'C1b_04-ogg.ogg', 'C1b_05-ogg.ogg'];
+				var audioC2a_ogg = ['C2a_01-ogg.ogg', 'C2a_02-ogg.ogg', 'C2a_03-ogg.ogg', 'C2a_04-ogg.ogg', 'C2a_05-ogg.ogg'];
+				var audioC2b_ogg = ['C2b_01-ogg.ogg', 'C2b_02-ogg.ogg', 'C2b_03-ogg.ogg', 'C2b_04-ogg.ogg', 'C2b_05-ogg.ogg'];
+				var audioD1a_ogg = ['D1a_01-ogg.ogg', 'D1a_02-ogg.ogg', 'D1a_03-ogg.ogg', 'D1a_04-ogg.ogg', 'D1a_05-ogg.ogg'];
+				var audioD1b_ogg = ['D1b_01-ogg.ogg', 'D1b_02-ogg.ogg', 'D1b_03-ogg.ogg', 'D1b_04-ogg.ogg', 'D1b_05-ogg.ogg'];
+				var audioD2a_ogg = ['D2a_01-ogg.ogg', 'D2a_02-ogg.ogg', 'D2a_03-ogg.ogg', 'D2a_04-ogg.ogg', 'D2a_05-ogg.ogg'];
+				var audioD2b_ogg = ['D2b_01-ogg.ogg', 'D2b_02-ogg.ogg', 'D2b_03-ogg.ogg', 'D2b_04-ogg.ogg', 'D2b_05-ogg.ogg'];
+				var audioE1a_ogg = ['E1a_01-ogg.ogg', 'E1a_02-ogg.ogg', 'E1a_03-ogg.ogg', 'E1a_04-ogg.ogg', 'E1a_05-ogg.ogg'];
+				var audioE1b_ogg = ['E1b_01-ogg.ogg', 'E1b_02-ogg.ogg', 'E1b_03-ogg.ogg', 'E1b_04-ogg.ogg', 'E1b_05-ogg.ogg'];
+				var audioE2a_ogg = ['E2a_01-ogg.ogg', 'E2a_02-ogg.ogg', 'E2a_03-ogg.ogg', 'E2a_04-ogg.ogg', 'E2a_05-ogg.ogg'];
+				var audioE2b_ogg = ['E2b_01-ogg.ogg', 'E2b_02-ogg.ogg', 'E2b_03-ogg.ogg', 'E2b_04-ogg.ogg', 'E2b_05-ogg.ogg'];
+				var audioF1a_ogg = ['F1a_01-ogg.ogg', 'F1a_02-ogg.ogg', 'F1a_03-ogg.ogg', 'F1a_04-ogg.ogg', 'F1a_05-ogg.ogg'];
+				var audioF1b_ogg = ['F1b_01-ogg.ogg', 'F1b_02-ogg.ogg', 'F1b_03-ogg.ogg', 'F1b_04-ogg.ogg', 'F1b_05-ogg.ogg'];
+				var audioF2a_ogg = ['F2a_01-ogg.ogg', 'F2a_02-ogg.ogg', 'F2a_03-ogg.ogg', 'F2a_04-ogg.ogg', 'F2a_05-ogg.ogg'];
+				var audioF2b_ogg = ['F2b_01-ogg.ogg', 'F2b_02-ogg.ogg', 'F2b_03-ogg.ogg', 'F2b_04-ogg.ogg', 'F2b_05-ogg.ogg'];
+				var audioG1a_ogg = ['G1a_01-ogg.ogg', 'G1a_02-ogg.ogg', 'G1a_03-ogg.ogg', 'G1a_04-ogg.ogg', 'G1a_05-ogg.ogg'];
+				var audioG1b_ogg = ['G1b_01-ogg.ogg', 'G1b_02-ogg.ogg', 'G1b_03-ogg.ogg', 'G1b_04-ogg.ogg', 'G1b_05-ogg.ogg'];
+				var audioG2a_ogg = ['G2a_01-ogg.ogg', 'G2a_02-ogg.ogg', 'G2a_03-ogg.ogg', 'G2a_04-ogg.ogg', 'G2a_05-ogg.ogg'];
+				var audioG2b_ogg = ['G2b_01-ogg.ogg', 'G2b_02-ogg.ogg', 'G2b_03-ogg.ogg', 'G2b_04-ogg.ogg', 'G2b_05-ogg.ogg'];
+				
+			// music and sound files
+					
+					// arrays of ambient files/ music to go under voice files in body of the piece
+				var audioAmbAB1_ogg = ['AB1_01.ogg', 'AB1_02.ogg', 'AB1_03.ogg', 'AB1_04.ogg', 'AB1_05.ogg', 'AB1_06.ogg', 'AB1_07.ogg', 'AB1_08.ogg', 'AB1_09.ogg', 'AB1_10.ogg'];
+				var audioAmbAB2_ogg = ['AB2_01.ogg', 'AB2_02.ogg', 'AB2_03.ogg', 'AB2_04.ogg', 'AB2_05.ogg', 'AB2_06.ogg', 'AB2_07.ogg', 'AB2_08.ogg', 'AB2_09.ogg', 'AB2_10.ogg'];
+				var audioAmbCD1_ogg = ['CD1_01.ogg', 'CD1_02.ogg', 'CD1_03.ogg', 'CD1_04.ogg', 'CD1_05.ogg', 'CD1_06.ogg', 'CD1_07.ogg', 'CD1_08.ogg', 'CD1_09.ogg', 'CD1_10.ogg'];
+				var audioAmbCD2_ogg = ['CD2_01.ogg', 'CD2_02.ogg', 'CD2_03.ogg', 'CD2_04.ogg', 'CD2_05.ogg', 'CD2_06.ogg', 'CD2_07.ogg', 'CD2_08.ogg', 'CD2_09.ogg', 'CD2_10.ogg'];
+				var audioAmbEF1_ogg = ['EF1_01.ogg', 'EF1_02.ogg', 'EF1_03.ogg', 'EF1_04.ogg', 'EF1_05.ogg', 'EF1_06.ogg', 'EF1_07.ogg', 'EF1_08.ogg', 'EF1_09.ogg', 'EF1_10.ogg'];
+				var audioAmbEF2_ogg = ['EF2_01.ogg', 'EF2_02.ogg', 'EF2_03.ogg', 'EF2_04.ogg', 'EF2_05.ogg', 'EF2_06.ogg', 'EF2_07.ogg', 'EF2_08.ogg'];
+				var audioAmbG_ogg = ['G1_01.ogg', 'G1_02.ogg', 'G1_03.ogg', 'G1_04.ogg', 'G1_05.ogg', 'G1_06.ogg', 'G1_07.ogg', 'G1_08.ogg', 'G1_09.ogg', 'G1_10.ogg', 'G2_01.ogg', 'G2_02.ogg', 'G2_03.ogg', 'G2_04.ogg', 'G2_05.ogg', 'G2_06.ogg', 'G2_07.ogg', 'G2_08.ogg', 'G2_09.ogg', 'G2_10.ogg'];
+			
+				// transition music
+				var audioTrans_ogg = ['T_01.ogg', 'T_02.ogg', 'T_03.ogg', 'T_04.ogg', 'T_05.ogg', 'T_06.ogg', 'T_07.ogg', 'T_08.ogg', 'T_09.ogg', 'T_10.ogg'];
+				
+				// titles audio -- to add
+				var audioTitles_ogg = [];
+				
+				// credits audio -- to add
+				var audioCredits_ogg = [];
+				
+				// arrays of texts -- lines of the poem
+				var textA1a = ["I would sit still and gather moss on stone", "I would barter my crown to fill warm throne", "I would suck marrow from the still-warm bone", "I would touch weathered flesh with skin of crone", "I would kiss every shadow winds have blown"];
+				var textA1b = ["I would sit a vigil at Hades’ door", "I would slit the throat of our finest boar", "I would rail and wail against senseless war", "I would swim across fetid pool of gore", "I would stare for hours at an empty shore"];
+				var textB1a = ["In horror each night I watch as you drown", "In our fields neglected crops wither brown", "In wispy clouds’ whisper, I dream you down", "In time you fall, a fool, a shawl, a crown", "In mocking tone they take you for a clown"];
+				var textB1b = ["In clear lucid night you rise naked, wet", "In fulfilment of a prophetic bet", "In every hour, a reason to regret", "In simple handiwork, memories forget", "In weak moments my appetites would whet"];
+				var textA2a = ["I would fingers touch, I would sigh and moan", "I would you here to see how he has grown", "I would you had not left us all alone", "I would have your skin, sinews to me sewn", "I would your heart, your eyes, your neck, backbone"];
+				var textA2b = ["I would pry your wrecked ship from ocean floor", "I would shed all these visions I deplore", "I would render tame a restless centaur", "I would shatter the mirror of your whore", "I would commit crimes, do things I abhor"];
+				var textB2a = ["My house of wax is slowly melting down", "My thighs quiver in a threadbare nightgown", "My glass reflects worry near to breakdown", "My eyes in dirt, they would have me facedown", "My offerings spent, coffers upside-down"];
+				var textB2b = ["My toils spent paying your insolvent debt", "My fingers cut on threads of empty net", "My future predestined, a fracture set", "My man will be another woman’s pet", "My guards useless as I alone face threat"];
+				var textC1a = ["Nothing to do but throw in the towel", "Nothing at table, neither fish nor fowl", "Nothing but usurpers here cheek by jowl", "Nothing sent here by your god or her owl", "Nothing on lips that are fixed in a scowl"];
+				var textC1b = ["Nothing worse than gruesome bile thick with hate", "Nothing to feed our maidens but rotting bait", "Nothing for our livestock, no partners to mate", "Nothing satisfying, nothing will sate", "Nothing to do here, nothing but to wait"];
+				var textD1a = ["When the last black rhinoceros lies dead", "When the last Pyrenean ibex fled", "When the last Javan tiger has not bred", "When all the aurochs have finally bled", "When wicked hunter mounts last lion’s head"];
+				var textD1b = ["When skies yield no promising flocks of bird", "When minks are pelted and are stripped, unfurred", "When the last great cat has finally purred", "When silence is my lover’s only word", "When giants sleeping underground are stirred"];
+				var textC2a = ["Nothing left for the banshee but to howl", "Nothing left where the tiger used to prowl", "Nothing left of the fierce cat but its growl", "Nothing tastes fresh, even the air is foul", "Nothing for sacrifice, birds disembowel"];
+				var textC2b = ["Nothing for the cock that crowed too late", "Nothing but cold headstone for bedmate", "Nothing but suitors, how their insults grate", "Nothing not expired far beyond its date", "Nothing fertile in this abandoned state"];
+				var textD2a = ["If we lay down now, have we made our bed?", "If I sought solitude, I’d not have wed", "If dawn lights a bier, the morning I dread", "If progeny ceases, our hopes we shed", "If land is corrupt, our map must be shred"];
+				var textD2b = ["If we can’t see clearly, our vision blurred", "If we asked for blessings, gods have demurred", "If justice is lacking, anger is spurred", "If we seek our bliss, we find it cloistered", "If you lie dead, I’d have your bones interred"];
+				var textE1a = ["For broken homes and bones my fingers weave", "For broken bones that suffer butcher’s cleave", "For every doubting night alone I grieve", "For each soldier’s widow that war bereave", "For species lost we will never retrieve"];		
+				var textE1b = ["For refugees crowded on stranded boat", "For swamps and bogs where hopeless bodies float", "For every memory castle needs a moat", "For wretched shores where broken bodies bloat", "For the blood of our sacrificial goat"];
+				var textF1a = ["Wash away the pain from my aching hand", "Wash contagion from this our poisoned land", "Wash my beating heart, its blood on this sand", "Wash over me golden, yearning, and tanned", "Wash away this loss, our desires demand"];
+				var textF1b = ["Wash my hands, this blood, this permanent stain", "Wash swollen joints, pricked skin, this ceaseless pain", "Wash my yearning lips, wet my tongue profane", "Wash imprisoned queen in the moonlight’s wane", "Wash shrouded intentions and make them plain"];
+				var textE2a = ["All tangled in this tapestry unweave", "All gods will fall as we do not believe", "All the children we will never conceive", "All loopholes only for a while deceive", "All heroes at war seek glory naive"];
+				var textE2b = ["All epics, histories which fate rewrote", "All endeavour whispers, nothing of note", "All daggers that would slit my threatened throat", "All the parasites and usurpers smote", "All suitors their interests alone promote"];
+				var textF2a = ["Swim the seas and find solace on our strand", "Swim now towards the destiny we planned", "Swim as if the waves you yourself command", "Swim electric rush from adrenal gland", "Swim to shore, free me from my prison land"];
+				var textF2b = ["Swim your dark shadows in my fevered brain", "Swim gossamer threads uncoiled from the skein", "Swim as love drowning, driving me insane", "Swim with knife in teeth, come destroy the vain", "Swim as if I true to you yet remain"];
+				var textG1a = ["We are as threads too tangled to unwind", "We are bound with chains that we can’t unbind", "We share neither bed nor bread, touch nor mind", "We have lost the treasures you’ll never find", "We ourselves made the restraints used to bind"];
+				var textG2a = ["Our promised contract has never been signed", "Our fragile bones against the millstone’s grind", "Our paths once crossed but were never aligned", "Our oracle is as mute as he is blind", "Our fate is as we, to it, are resigned"];
+				var textG1b = ["We may only meet again in our tomb", "We can’t sweep away this soil with a broom", "We can never happy ending assume", "We cast hopes to the wind as grey clouds loom", "We clown away in a jester’s costume"];
+				var textG2b = ["Our cupboards empty as a barren womb", "Our warp and weft we unthread on this loom", "Our hopes lie in state, the ghost of my groom", "Our table set for the feast to resume", "Our garden bereft of flowers that bloom"];
+			
+			// declare iteration variables
+			var videoType = 0; // is this best for video chooser or array instead?
+			var i = 1; // cycle tracker
+			
+			// declare rhyme variables
+			    var aRhyme = Math.round(Math.random());
+				var bRhyme = Math.round(Math.random());
+				var cRhyme = Math.round(Math.random());
+				var dRhyme = Math.round(Math.random());
+				var eRhyme = Math.round(Math.random());
+				var fRhyme = Math.round(Math.random());
+				var gRhyme = Math.round(Math.random());
+			
+			// random range function for arrays
+			function rand_range(max) {
+			    return Math.floor(Math.random()*(max+1));
+			}
+			  
+			// choose from array function
+				function choose(array) {
+			    return array[rand_range(array.length-1)];
+			}
+			
+			// build videoX function
+			  function create_videoX(sel, videoloc, audiosel) {
+			  	var main = document.getElementById("main");
+			    main.removeChild(videox);
+			    main.removeChild(audioLine_1);
+			    main.removeChild(audioLine_2);
+			    main.removeChild(audioAmb);
+			    var video = main.appendChild(document.createElement('video'));
+			    var selectVideo = choose(sel);
+			    video.id = "videox";
+			    video.src = videoloc + selectVideo;
+			    video.load();
+			    video.autoplay = true; video.muted = true;
+			    audiosel();
+			  // Remove video from array and print array to console
+			    console.log(selectVideo);
+			    var a = sel.indexOf(selectVideo);
+			    sel.splice(a,1);
+			  }
+			
+			// create ambient audio function
+				function create_audioAMB(sel, loc, ln1, ln2, cv) {
+			    	var main = document.getElementById('main');
+					var audioAmb = main.appendChild(document.createElement('audio'));
+			    	var selectAudioAmb = choose(sel);
+			    	audioAmb.id = "audioAmb";
+			    	audioAmb.src = loc + selectAudioAmb;
+			    	audioAmb.autoplay = true;
+			    	setTimeout(ln1, 3000);
+			    	setTimeout(ln2, 11000);
+			    	audioAmb.addEventListener('ended', cv, false);
+			    	// remove clip from array
+			    		console.log(selectAudioAmb);
+			    		var a = sel.indexOf(selectAudioAmb);
+			    		sel.splice(a,1);  
+			  }
+			
+			// create line function
+				function createLineX (sel, ln, loc, tln, selb, locb, tlnb) { 
+			    	var audioLine_1 = main.appendChild(document.createElement('audio'));
+			   		if (aRhyme == 1) {
+			   			var selectLine = choose(sel);
+			   			var a = sel.indexOf(selectLine);
+			    		audioLine_1.id = ln;
+			    		audioLine_1.src = loc + selectLine;
+			    		audioLine_1.autoplay = true;
+			    		textLine =  tln[a];
+			    		// log audio file and text
+			    		console.log(selectLine);
+			    		console.log(textLine);
+			    		// remove from arrays
+			    		sel.splice(a,1);
+			    		tln.splice(a,1);
+				} else { 
+			   			var selectLine = choose(selb);
+			   			var a = selb.indexOf(selectLine);
+			    		audioLine_1.id = ln;
+			    		audioLine_1.src = locb + selectLine;
+			    		audioLine_1.autoplay = true;
+			    		textLine = tlnb[a];
+			    		// log audio file and text
+			    		console.log(selectLine);
+			    		console.log(textLine);
+			    		// remove from arrays
+			    		selb.splice(a,1);
+			    		tlnb.splice(a,1);
+			      	}
+			      }
+			      			
+			// page reload function  -- not used in current
+				function page_reload() { 
+					document.location.reload(true);
+				}
+				
+			// create credits in HTML
+				function create_credits() { 
+					window.location.replace("credits1.html")
+				}
+			
+			
+			// cycle -- restart program after 4 cycles have completed -- otherwise repeat with rhyme variables swapped
+			
+			// build AB1 mov on successive iterations
+			  function create_video_AB1_X() {
+			    var main = document.getElementById("main");
+			    main.removeChild(videoT);
+			    main.removeChild(audioTrans);
+			    var video = main.appendChild(document.createElement('video'));
+			    var selectVideo = choose(videoAB1_WebM);
+			    video.id = "videox";
+			    video.src = vidlocAB1_WebM + selectVideo;
+			    video.load();
+			    video.autoplay = true; video.muted = true;
+			    create_audioAB1();
+			  //Remove video from array and print array to console
+				console.log(selectVideo);
+			    var a = videoAB1_WebM.indexOf(selectVideo);
+			    videoAB1_WebM.splice(a,1);
+			  	}
+			
+			//  reload program after 4 iterations.
+			function cycle_again() {
+				if (i == 4) { 
+					create_credits(); 
+					} else { 
+						create_video_AB1_X();
+						}
+					}
+						
+			// create transition
+			
+			// create transition music
+				function create_audioT() {
+			    	var main = document.getElementById('main');
+					audioTrans = main.appendChild(document.createElement('audio'));
+			    	var selectAudioTrans = choose(audioTrans_ogg);
+			    	audioTrans.id = "audioTrans";
+			    	audioTrans.src = audlocTrans_ogg + selectAudioTrans;
+			    	audioTrans.autoplay = true;
+			    	
+			// switch a and b rhyme tables after each cycle
+			    	if ( aRhyme == 1) { 
+						 aRhyme = 0; } else {
+						 aRhyme = 1;
+						}
+					if ( bRhyme == 1) { 
+						 bRhyme = 0; } else {
+						 bRhyme = 1;
+						}
+					if ( cRhyme == 1) { 
+						 cRhyme = 0; } else {
+						 cRhyme = 1;
+						}
+					if ( dRhyme == 1) { 
+						 dRhyme = 0; } else {
+						 dRhyme = 1;
+						}
+					if ( eRhyme == 1) { 
+						 eRhyme = 0; } else {
+						 eRhyme = 1;
+						}
+					if ( fRhyme == 1) { 
+						 fRhyme = 0; } else {
+						 fRhyme = 1;
+						}
+					if ( gRhyme == 1) { 
+						 gRhyme = 0; } else {
+						 gRhyme = 1;
+						}
+			    	audioTrans.addEventListener('ended', cycle_again, false);
+			     }
+			
+			// build transition video
+			  function create_video_T() {
+			    var main = document.getElementById("main");
+			    main.removeChild(audioTrans);
+			    main.removeChild(poem);
+			    var video = main.appendChild(document.createElement('video'));
+			    var selectVideo = choose(videoTrans_WebM);
+			    video.id = "videoT";
+			    video.src = vidlocTran_WebM + selectVideo;
+			    video.setAttribute("width", "1920"); video.setAttribute("height", "1080");
+			    video.load();
+			    video.autoplay = true; video.muted = true;
+			    //Remove video from array and print array to console
+			  	console.log(selectVideo);
+			    var a = videoTrans_WebM.indexOf(selectVideo);
+			    videoTrans_WebM.splice(a,1);
+			    create_audioT();
+			     i++;
+			    console.log(i);
+			    }
+			    
+			    // create transition music for poem
+				function create_audioTpoem() {
+			    	var main = document.getElementById('main');
+					audioTrans = main.appendChild(document.createElement('audio'));
+			    	var selectAudioTrans = choose(audioTrans_ogg);
+			    	audioTrans.id = "audioTrans";
+			    	audioTrans.src = audlocTrans_ogg + selectAudioTrans;
+			    	audioTrans.autoplay = true;
+			    	}
+			    
+			// create poem text
+			  function create_poem() {
+			    var main = document.getElementById("main");
+			    main.removeChild(videox);
+			    main.removeChild(audioLine_2);
+			    main.removeChild(audioLine_1);
+			    main.removeChild(audioAmb);
+			    poem = document.createElement("div"); poem.setAttribute("style", "width:1600px; height: 900px; margin: auto; border: 3px solid #000000;");
+			    var row = document.createElement("div");
+			    row.className = "row";
+			    
+			    var c1 = document.createElement('div');
+			    c1.className = 'column side';
+			    row.appendChild(c1);
+			    var c2 = document.createElement('div');
+			    c2.className = 'column text';
+			    row.appendChild(c2);
+			    var c3 = document.createElement('div');
+			    c3.className = 'column side';
+			    row.appendChild(c3);
+			    var c4 = document.createElement('div');
+			    c4.className = 'column text';
+			    row.appendChild(c4);
+			    var c5 = document.createElement('div');
+			    c5.className = 'column side';
+			    row.appendChild(c5);
+			    
+			    var title = document.createElement("h2");  title.id = "title";
+			    var para1 = document.createElement("p");
+			    var para2 = document.createElement("p");
+			    var para3 = document.createElement("p");
+			    var para4 = document.createElement("p");
+			    var para5 = document.createElement("p");
+			    var para6 = document.createElement("p");
+			    var para7 = document.createElement("p");
+			    var para8 = document.createElement("p");
+			   
+			    var t = document.createTextNode('Penelope');
+			    var sp1 = document.createElement("p");
+			    var sp2 = document.createElement("p");
+			    var sp3 = document.createElement("p");
+			    
+			    var versionTime = document.createElement("p");
+			   
+			    main.appendChild(poem);
+ 				poem.appendChild(title);
+			    title.appendChild(t);
+			    
+			    poem.appendChild(row);
+			    
+			    row.appendChild(c1);
+			    c1.appendChild(sp1);
+			    
+			    row.appendChild(c2);
+			    c2.appendChild(para1);
+			    para1.appendChild(document.createTextNode(savedLine1)); para1.appendChild(document.createElement("br"));  
+			    para1.appendChild(document.createTextNode(savedLine2)); para1.appendChild(document.createElement("br")); 
+			    para1.appendChild(document.createTextNode(savedLine3)); para1.appendChild(document.createElement("br")); 
+			    para1.appendChild(document.createTextNode(savedLine4)); para1.appendChild(document.createElement("br"));
+			    c2.appendChild(para2);
+			    para2.appendChild(document.createTextNode(savedLine5)); para2.appendChild(document.createElement("br")); 
+			    para2.appendChild(document.createTextNode(savedLine6)); para2.appendChild(document.createElement("br")); 
+			    para2.appendChild(document.createTextNode(savedLine7)); para2.appendChild(document.createElement("br")); 
+			    para2.appendChild(document.createTextNode(savedLine8)); para2.appendChild(document.createElement("br"));
+			    c2.appendChild(para3);
+			    para3.appendChild(document.createTextNode(savedLine9)); para3.appendChild(document.createElement("br")); 
+			    para3.appendChild(document.createTextNode(savedLine10)); para3.appendChild(document.createElement("br")); 
+			    para3.appendChild(document.createTextNode(savedLine11)); para3.appendChild(document.createElement("br")); 
+			    para3.appendChild(document.createTextNode(savedLine12)); para3.appendChild(document.createElement("br"));   
+			    c2.appendChild(para4);
+			    para4.appendChild(document.createTextNode(savedLine13)); para4.appendChild(document.createElement("br"));
+			    
+			    row.appendChild(c3);
+			    c3.appendChild(sp2);
+			    
+			    row.appendChild(c4);
+			    c4.appendChild(para5);
+			    para5.appendChild(document.createTextNode(savedLine14)); para5.appendChild(document.createElement("br"));
+			    c4.appendChild(para6);
+			    para6.appendChild(document.createTextNode(savedLine15)); para6.appendChild(document.createElement("br")); 
+			    para6.appendChild(document.createTextNode(savedLine16)); para6.appendChild(document.createElement("br")); 
+			    para6.appendChild(document.createTextNode(savedLine17)); para6.appendChild(document.createElement("br")); 
+			    para6.appendChild(document.createTextNode(savedLine18)); para6.appendChild(document.createElement("br"));
+			    c4.appendChild(para7);
+			    para7.appendChild(document.createTextNode(savedLine19)); para7.appendChild(document.createElement("br")); 
+			    para7.appendChild(document.createTextNode(savedLine20)); para7.appendChild(document.createElement("br")); 
+			    para7.appendChild(document.createTextNode(savedLine21)); para7.appendChild(document.createElement("br")); 
+			    para7.appendChild(document.createTextNode(savedLine22)); para7.appendChild(document.createElement("br"));
+			    c4.appendChild(para8);
+			    para8.appendChild(document.createTextNode(savedLine23)); para8.appendChild(document.createElement("br")); 
+			    para8.appendChild(document.createTextNode(savedLine24)); para8.appendChild(document.createElement("br")); 
+			    para8.appendChild(document.createTextNode(savedLine25)); para8.appendChild(document.createElement("br")); 
+			    para8.appendChild(document.createTextNode(savedLine26)); para8.appendChild(document.createElement("br"));
+			    
+			    row.appendChild(c5);
+			    c5.appendChild(sp3);
+			    
+			    poem.appendChild(versionTime);  versionTime.id = "versionTime";
+			    
+			    var d = new Date();
+			    
+			    var ver = document.createTextNode('Generated: ' + d.toUTCString()); versionTime.appendChild(ver);
+			    
+			    create_audioTpoem();
+			   
+			    setTimeout(create_video_T, 25000); 
+			  }
+			  
+			// create BA2 audio tracks
+			    function create_Line_26() { 
+			    	createLineX(audioA1a_ogg, "audioLine_2", audlocA1a_ogg, textA1a, audioA1b_ogg, audlocA1b_ogg, textA1b);
+			    	savedLine26 = textLine;
+				 }
+			
+			  	function create_Line_25() { 
+			    	createLineX(audioB1a_ogg, "audioLine_1", audlocB1a_ogg, textB1a, audioB1b_ogg, audlocB1b_ogg, textB1b);
+			    	savedLine25 = textLine;
+				 }   	
+				
+			// create ambient audio BA2
+			 	function create_audioBA2() {
+					create_audioAMB(audioAmbAB1_ogg, audlocAmbAB1_ogg, create_Line_25, create_Line_26, create_poem);
+				}
+			
+			// build BA2 video
+			  	function create_video_BA2() { 
+			  		create_videoX(videoAB1_WebM, vidlocAB1_WebM, create_audioBA2);
+			  	}
+				 
+			  
+			// create BA1 audio tracks  
+			    function create_Line_24() { 
+			    	createLineX(audioA2a_ogg, "audioLine_2", audlocA2a_ogg, textA2a, audioA2b_ogg, audlocA2b_ogg, textA2b);
+			    	savedLine24 = textLine;
+				 }
+			
+			  	function create_Line_23() { 
+			    	createLineX(audioB2a_ogg, "audioLine_1", audlocB2a_ogg, textB2a, audioB2b_ogg, audlocB2b_ogg, textB2b);
+			    	savedLine23 = textLine;
+				 }   	
+			         
+			// create ambient audio BA1
+			  	function create_audioBA1() {
+					create_audioAMB(audioAmbAB2_ogg, audlocAmbAB2_ogg, create_Line_23, create_Line_24, create_video_BA2);
+				}
+				
+			// build BA1 video
+				function create_video_BA1() { 
+			  	create_videoX(videoAB2_WebM, vidlocAB2_WebM, create_audioBA1);
+			  	}  
+			  
+			// create DC2 audio tracks
+			    function create_Line_22() { 
+			    	createLineX(audioC1a_ogg, "audioLine_2", audlocC1a_ogg, textC1a, audioC1b_ogg, audlocC1b_ogg, textC1b);
+			    	savedLine22 = textLine;
+				 }
+			
+			  	function create_Line_21() { 
+			    	createLineX(audioD1a_ogg, "audioLine_1", audlocD1a_ogg, textD1a, audioD1b_ogg, audlocD1b_ogg, textD1b);
+			    	savedLine21 = textLine;
+				 }   	
+				 
+			// create ambient audio DC2 
+			  function create_audioDC2() {
+				create_audioAMB(audioAmbCD1_ogg, audlocAmbCD1_ogg, create_Line_21, create_Line_22, create_video_BA1);
+				}
+				
+			// build DC2 video
+			function create_video_DC2() { 
+			  	create_videoX(videoCD1_WebM, vidlocCD1_WebM, create_audioDC2);
+			  	}
+			  
+			// create DC1 audio tracks     
+			 function create_Line_20() { 
+			    createLineX(audioC2a_ogg, "audioLine_2", audlocC2a_ogg, textC2a, audioC2b_ogg, audlocC2b_ogg, textC2b);
+			    savedLine20 = textLine;
+				 }
+			
+			  function create_Line_19() { 
+			    createLineX(audioD2a_ogg, "audioLine_1", audlocD2a_ogg, textD2a, audioD2b_ogg, audlocD2b_ogg, textD2b);
+			    savedLine19 = textLine;
+				 }   	
+			      	 
+			// create ambient audio DC1
+			  function create_audioDC1() {
+				create_audioAMB(audioAmbCD2_ogg, audlocAmbCD2_ogg, create_Line_19, create_Line_20, create_video_DC2);
+				}
+			  
+			// build DC1 mov
+			  function create_video_DC1() { 
+			  	create_videoX(videoCD2_WebM, vidlocCD2_WebM, create_audioDC1);
+			  }
+			
+			 // create FE2 audio tracks   
+			 function create_Line_18() { 
+			    createLineX(audioE1a_ogg, "audioLine_2", audlocE1a_ogg, textE1a, audioE1b_ogg, audlocE1b_ogg, textE1b);
+			    savedLine18 = textLine; 
+				}
+			
+			  function create_Line_17() { 
+			    	createLineX(audioF1a_ogg, "audioLine_1", audlocF1a_ogg, textF1a, audioF1b_ogg, audlocF1b_ogg, textF1b);
+			    	savedLine17 = textLine;
+				}   	
+				 
+			// create ambient audio FE2
+			   function create_audioFE2() {
+					create_audioAMB(audioAmbEF1_ogg, audlocAmbEF1_ogg, create_Line_17, create_Line_18, create_video_DC1);
+				}
+				
+			// build FE2 mov
+			  function create_video_FE2() { 
+			  	create_videoX(videoEF1_WebM, vidlocEF1_WebM, create_audioFE2);
+			  }
+			  
+			// create FE1 audio tracks 
+			  function create_Line_16() { 
+			    createLineX(audioE2a_ogg, "audioLine_2", audlocE2a_ogg, textE2a, audioE2b_ogg, audlocE2b_ogg, textE2b);
+			    savedLine16 = textLine;   
+				 }
+			
+			  function create_Line_15() { 
+			    createLineX(audioF2a_ogg, "audioLine_1", audlocF2a_ogg, textF2a, audioF2b_ogg, audlocF2b_ogg, textF2b);
+			    savedLine15 = textLine; 
+				}   
+				 
+			// create ambient audio FE1
+			  function create_audioFE1() {
+				create_audioAMB(audioAmbEF2_ogg, audlocAmbEF2_ogg, create_Line_15, create_Line_16, create_video_FE2);
+				}
+			  
+			// build FE1 video
+			  function create_video_FE1() { 
+			  	create_videoX(videoEF2_WebM, vidlocEF2_WebM, create_audioFE1);
+			  	}
+			  
+			// create G audio tracks
+			 function create_Line_14() { 
+			    createLineX(audioG2a_ogg, "audioLine_2", audlocG2a_ogg, textG2a, audioG2b_ogg, audlocG2b_ogg, textG2b);
+			    savedLine14 = textLine;
+				 }
+			
+			  function create_Line_13() { 
+			    createLineX(audioG1a_ogg, "audioLine_1", audlocG1a_ogg, textG1a, audioG1b_ogg, audlocG1b_ogg, textG1b);
+			    savedLine13 = textLine;
+				 }   
+				 
+			// create ambient audio G 
+			  function create_audioG() {
+				create_audioAMB(audioAmbG_ogg, audlocAmbG_ogg, create_Line_13, create_Line_14, create_video_FE1);
+				}
+				
+			// build G2 video
+			  function create_video_G2() {
+			    var main = document.getElementById("main");
+			    main.removeChild(videox);
+			    var video = main.appendChild(document.createElement('video'));
+			    var selectVideo = choose(videoG2_WebM);
+			    video.id = "videox";
+			    video.src = vidlocG2_WebM + selectVideo;
+			    video.load();
+			    video.autoplay = true; video.muted = true;
+			  //Remove video from array and print array to console
+			  	console.log(selectVideo);
+			    var a = videoG2_WebM.indexOf(selectVideo);
+			    videoG2_WebM.splice(a,1);
+			  }
+			  
+			// build G1 video
+			  function create_video_G1() {
+			    var main = document.getElementById("main");
+			    main.removeChild(videox);
+			    main.removeChild(audioLine_2);
+			    main.removeChild(audioLine_1);
+			    main.removeChild(audioAmb);
+			    var video = main.appendChild(document.createElement('video'));
+			    var selectVideo = choose(videoG1_WebM);
+			    video.id = "videox";
+			    video.src = vidlocG1_WebM + selectVideo;
+			    video.load();
+			    video.autoplay = true; video.muted = true;
+			    create_audioG();
+			    video.addEventListener('ended', create_video_G2, false);
+			  //Remove video from array and print array to console
+			  	console.log(selectVideo);
+			    var a = videoG1_WebM.indexOf(selectVideo);
+			    videoG1_WebM.splice(a,1);
+			  }
+			  
+			// create EF2 audio tracks
+			  function create_Line_12() { 
+			    	createLineX(audioF2a_ogg, "audioLine_2", audlocF2a_ogg, textF2a, audioF2b_ogg, audlocF2b_ogg, textF2b);
+			    	savedLine12 = textLine;
+				 }
+			
+			  function create_Line_11() { 
+			    	createLineX(audioE2a_ogg, "audioLine_1", audlocE2a_ogg, textE2a, audioE2b_ogg, audlocE2b_ogg, textE2b);
+			    	savedLine11 = textLine;
+				 }   
+				 
+			// create ambient audio EF2
+			  function create_audioEF2() {
+					create_audioAMB(audioAmbEF2_ogg, audlocAmbEF2_ogg, create_Line_11, create_Line_12, create_video_G1);
+					}
+				
+			// build EF2 video
+			  function create_video_EF2() { 
+			  	create_videoX(videoEF2_WebM, vidlocEF2_WebM, create_audioEF2);
+			  }
+			  
+			// create EF1 audio tracks
+			  function create_Line_10() { 
+			    	createLineX(audioF1a_ogg, "audioLine_2", audlocF1a_ogg, textF1a, audioF1b_ogg, audlocF1b_ogg, textF1b);
+			    	savedLine10 = textLine;
+				 }
+			
+			  function create_Line_9() { 
+			    	createLineX(audioE1a_ogg, "audioLine_1", audlocE1a_ogg, textE1a, audioE1b_ogg, audlocE1b_ogg, textE1b);
+			    	savedLine9 = textLine;
+				 }    
+			      	 
+			// create ambient audio EF1
+			  function create_audioEF1() {
+					create_audioAMB(audioAmbEF1_ogg, audlocAmbEF1_ogg, create_Line_9, create_Line_10, create_video_EF2);
+					}
+			  
+			// build EF1 mov
+			  function create_video_EF1() { 
+			  	create_videoX(videoEF1_WebM, vidlocEF1_WebM, create_audioEF1);
+			  }
+			
+			// create CD2 audio tracks
+			 function create_Line_8() { 
+			    	createLineX(audioD2a_ogg, "audioLine_2", audlocD2a_ogg, textD2a, audioD2b_ogg, audlocD2b_ogg, textD2b);
+			    	savedLine8 = textLine;
+				 }
+			
+			  function create_Line_7() { 
+			    	createLineX(audioC2a_ogg, "audioLine_1", audlocC2a_ogg, textC2a, audioC2b_ogg, audlocC2b_ogg, textC2b);
+			    	savedLine7 = textLine;
+				 }    
+
+			// create ambient audio CD2
+			    function create_audioCD2() {
+					create_audioAMB(audioAmbCD2_ogg, audlocAmbCD2_ogg, create_Line_7, create_Line_8, create_video_EF1);
+					}
+				
+			// build CD2 video
+			  function create_video_CD2() { 
+			  	create_videoX(videoCD2_WebM, vidlocCD2_WebM, create_audioCD2);
+			  }
+			  
+			// create CD1 audio tracks
+			  function create_Line_6() { 
+			    	createLineX(audioD1a_ogg, "audioLine_2", audlocD1a_ogg, textD1a, audioD1b_ogg, audlocD1b_ogg, textD1b);
+			    	savedLine6 = textLine;
+				 }
+			
+			  function create_Line_5() { 
+			    	createLineX(audioC1a_ogg, "audioLine_1", audlocC1a_ogg, textC1a, audioC1b_ogg, audlocC1b_ogg, textC1b);
+			    	savedLine5 = textLine;
+				 }    
+			      	 
+			// create ambient audio CD1
+			  function create_audioCD1() {
+					create_audioAMB(audioAmbCD1_ogg, audlocAmbCD1_ogg, create_Line_5, create_Line_6, create_video_CD2);
+				 }
+			  
+			// build CD1 video
+			function create_video_CD1() { 
+			  	create_videoX(videoCD1_WebM, vidlocCD1_WebM, create_audioCD1);
+			  }
+			  
+			// create AB2 audio tracks 
+			 function create_Line_4() { 
+			    	createLineX(audioB2a_ogg, "audioLine_2", audlocB2a_ogg, textB2a, audioB2b_ogg, audlocB2b_ogg, textB2b);
+			    	savedLine4 = textLine;
+				 }
+			
+			  function create_Line_3() { 
+			    	createLineX(audioA2a_ogg, "audioLine_1", audlocA2a_ogg, textA2a, audioA2b_ogg, audlocA2b_ogg, textA2b);
+			    	savedLine3 = textLine;
+				 }    
+			      
+			// create ambient audio AB2
+			    function create_audioAB2() {
+					create_audioAMB(audioAmbAB2_ogg, audlocAmbAB2_ogg, create_Line_3, create_Line_4, create_video_CD1); 
+				 }
+			
+			  // build AB2 video
+			   function create_video_AB2() { 
+			  	create_videoX(videoAB2_WebM, vidlocAB2_WebM, create_audioAB2);
+			  }
+				 
+			// create AB1 audio tracks
+			    function create_Line_2() { 
+			    	createLineX(audioB1a_ogg, "audioLine_2", audlocB1a_ogg, textB1a, audioB1b_ogg, audlocB1b_ogg, textB1b);
+			    	savedLine2 = textLine;
+				 }
+			      
+				function create_Line_1() { 
+			    	createLineX(audioA1a_ogg, "audioLine_1", audlocA1a_ogg, textA1a, audioA1b_ogg, audlocA1b_ogg, textA1b);
+			    	savedLine1 = textLine;
+				 }
+				 
+			// create ambient audio for first line
+			  function create_audioAB1() {
+				create_audioAMB(audioAmbAB1_ogg, audlocAmbAB1_ogg, create_Line_1, create_Line_2, create_video_AB2); 
+				 }
+				
+			// build AB1 video
+			  function create_video_AB1() {
+			    var main = document.getElementById("main");
+			    var para = document.getElementById("para");
+			    main.removeChild(para);
+			    var video = main.appendChild(document.createElement('video'));
+			    var selectVideo = choose(videoAB1_WebM);
+			    video.id = "videox";
+			    video.src = vidlocAB1_WebM + selectVideo;
+			    video.load();
+			    video.autoplay = true; video.muted = true;
+			    create_audioAB1();
+			  //Remove video from array and print array to console
+			    console.log(selectVideo);
+			    var a = videoAB1_WebM.indexOf(selectVideo);
+			    videoAB1_WebM.splice(a,1);
+			  }
+			  
+			 // create first page with titles
+			  function create_title() {
+			    var main = document.getElementById("main");
+			    var para = document.createElement("h1");
+			    para.id = "para";
+			    var node = document.createTextNode('Penelope');
+			    main.appendChild(para);
+			    para.appendChild(node);
+			    setTimeout(create_video_AB1, 5000); 
+			  }
+			 
+		</script>
+	</head>
+	<body onload="create_title();">
+		<div id="main">
+		</div>
+	</body>
+</html>
